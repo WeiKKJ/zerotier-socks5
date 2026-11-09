@@ -1,0 +1,20 @@
+services:
+  zerotier-socks5:
+    build: .
+    container_name: zerotier-socks5
+    restart: unless-stopped
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    cap_add:
+      - NET_ADMIN
+    environment:
+      # Set this to your 16-character ZeroTier network ID.
+      ZT_NETWORK_ID: "${ZT_NETWORK_ID:-}"
+    volumes:
+      - zerotier-one:/var/lib/zerotier-one
+    ports:
+      # Host-local only. Clash on this Windows machine can use 127.0.0.1:21081.
+      - "127.0.0.1:21081:1080/tcp"
+
+volumes:
+  zerotier-one:
